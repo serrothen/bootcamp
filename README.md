@@ -1,2 +1,2 @@
 # bootcamp
-My solutions to the IT-Bootcamp (https://itbootcamp.at/) tasks.
+My solutions to the IT-Bootcamp tasks.
