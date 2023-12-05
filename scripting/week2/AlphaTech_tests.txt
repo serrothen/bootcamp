@@ -1,0 +1,212 @@
+
+Name, birthday and sex of the Sales department:
+
+SELECT employees."EmployeeName", employees."DateofBirth", employees."Sex" 
+FROM employees 
+INNER JOIN departments ON employees."DeptID" = departments."DeptID" 
+WHERE departments."Department" = 'Sales';
+
++-------------------------------------------+
+| EmployeeName          | DateofBirth | Sex |
+|-----------------------+-------------+-----|
+| Bunbury, Jessica      | 1971-06-01  | F   |
+| Carter, Michelle      | 1970-05-15  | F   |
+| Chigurh, Anton        | 1977-06-11  | M   |
+| Daneault, Lynn        | 1997-04-19  | F   |
+| Delarge, Alex         | 1982-11-02  | M   |
+| Dietrich, Jenna       | 1994-05-14  | F   |
+| Driver, Elle          | 1995-11-08  | F   |
+| Forrest, Alex         | 1982-07-07  | M   |
+| Fraval, Maruk         | 1970-08-28  | M   |
+| Gill, Whitney         | 1978-07-10  | F   |
+| Givens, Myriam        | 1996-09-22  | F   |
+| Guilianno, Mike       | 1976-02-09  | M   |
+| Hitchcock, Alfred     | 1995-09-14  | M   |
+| Houlihan, Debra       | 1973-03-17  | F   |
+| Kampew, Donysha       | 1996-11-11  | F   |
+| Khemmich, Bartholemew | 1986-11-27  | M   |
+| Kreuger, Freddy       | 1976-02-24  | M   |
+| Leruth, Giovanni      | 1995-12-27  | M   |
+| McKinzie, Jac         | 1991-07-01  | M   |
+| Nguyen, Dheepa        | 1996-03-31  | F   |
+| Onque, Jasmine        | 1997-05-11  | F   |
+| Ozark, Travis         | 1989-05-19  | M   |
+| Potts, Xana           | 1995-08-29  | F   |
+| Ren, Kylo             | 1961-10-12  | M   |
+| Smith, John           | 1991-08-16  | M   |
+| Stansfield, Norman    | 1981-05-09  | M   |
+| Strong, Caitrin       | 1996-05-12  | F   |
+| Terry, Sharlene       | 1972-05-07  | F   |
+| Torrence, Jack        | 1975-01-15  | M   |
+| Valentin,Jackie       | 1998-05-23  | F   |
+| Villanueva, Noah      | 1996-07-11  | M   |
++-------------------------------------------+
+
+Female share:
+
+SELECT TO_CHAR(CAST(COUNT(*) FILTER (WHERE "Sex"='F') AS decimal)/(COUNT(*)),'0.99') 
+AS "Ratio Woman/Total" FROM employees;
+
++-------------------+
+| Ratio Woman/Total |
+|-------------------|
+|  0.57             |
++-------------------+
+
+Gender pay gap:
+
+SELECT CAST(AVG("Salary"::numeric) FILTER (WHERE "Sex"='F') AS MONEY) 
+AS "Average Salary Women", 
+CAST(AVG("Salary"::numeric) FILTER (WHERE "Sex"='M') AS MONEY)
+AS "Average Salary Man" FROM employees;
+
++-------------------------------------------+
+| Average Salary Women | Average Salary Man |
+|----------------------+--------------------|
+| $67,786.73           | $70,629.40         |
++-------------------------------------------+
+
+Hiring over three years:
+
+SELECT COUNT(*) FROM employees WHERE "DateofHire" >= (CURRENT_DATE - INTERVAL '3 year');
+
++-------+
+| count |
+|-------|
+| 161   |
++-------+
+
+Age of oldest employee:
+
+SELECT TO_CHAR(AGE(CURRENT_DATE, MIN("DateofBirth")), 
+'YY "Years" mm "Months" DD "Days"') 
+AS "Age of oldest employee" FROM employees;
+
++----------------------------+
+| Age of oldest employee     |
+|----------------------------|
+| 65 Years 10 Months 26 Days |
++----------------------------+
+
+Average age:
+
+SELECT TO_CHAR(AVG(AGE(CURRENT_DATE, "DateofBirth")), 
+'YY "Years" mm "Months" DD "Days"') 
+AS "Average Age" FROM employees;
+
++----------------------------+
+| Average Age                |
+|----------------------------|
+| 37 Years 09 Months 20 Days |
++----------------------------+
+
+Total salary for Apple projects:
+
+SELECT SUM(employees."Salary") AS "Total salary for Apple projects" FROM employees 
+INNER JOIN projects ON employees."ProjectID"=projects."ProjectID" 
+INNER JOIN clients ON projects."ClientID"=clients."ClientID" 
+WHERE clients."Client"='Apple';
+
++---------------------------------+
+| Total salary for Apple projects |
+|---------------------------------|
+| $6,568,130.00                   |
++---------------------------------+
+
+Name, position and department of employees
+working on the projects "Google Cloud Platform"
+and "AWS":
+
+SELECT employees."EmployeeName", positions."Position", departments."Department" 
+FROM employees 
+INNER JOIN positions ON employees."PositionID"=positions."PositionID" 
+INNER JOIN departments ON employees."DeptID"=departments."DeptID" 
+INNER JOIN projects ON employees."ProjectID"=projects."ProjectID" 
+WHERE projects."Project"='Google Cloud Platform' OR projects."Project"='AWS';
+
++-------------------------------------------------------------------------+
+| EmployeeName          | Position                 | Department           |
+|-----------------------+--------------------------+----------------------|
+| Athwal, Sam           | Software Developer I     | Software Engineering |
+| Beak, Kimberly        | Software Developer II    | Software Engineering |
+| Burke, Joelle         | Software Developer II    | Software Engineering |
+| Chigurh, Anton        | Area Sales Manager       | Sales                |
+| Clukey, Elijian       | Software Developer I     | Software Engineering |
+| Cockel, James         | Software Developer I     | Software Engineering |
+| Cross, Noah           | Sr. Network Engineer     | IT/IS                |
+| Dolan, Linda          | IT Support               | IT/IS                |
+| England, Rex          | Software Developer I     | Software Engineering |
+| Forrest, Alex         | Area Sales Manager       | Sales                |
+| Garcia, Raul          | Software Developer I     | Software Engineering |
+| Gonzalez, Maria       | IT Support               | IT/IS                |
+| Gray, Elijiah         | Software Architect       | Software Engineering |
+| Jacobi, Hannah        | Software Developer I     | Software Engineering |
+| Kreuger, Freddy       | Area Sales Manager       | Sales                |
+| Lajiri,  Jyoti        | Sr. Network Engineer     | IT/IS                |
+| Landa, Hans           | Software Architect       | Software Engineering |
+| Lindsay, Leonara      | IT Support               | IT/IS                |
+| Lynch, Lindsay        | Software Developer I     | Software Engineering |
+| Meads, Elizabeth      | Software Developer I     | Software Engineering |
+| Monroe, Peter         | IT Manager - Support     | IT/IS                |
+| Moran, Patrick        | Software Developer II    | Software Engineering |
+| Ndzi, Colombui        | Software Developer I     | Software Engineering |
+| Ngodup, Shari         | Software Developer I     | Software Engineering |
+| Patronick, Lucas      | Software Engineer        | Software Engineering |
+| Quinn, Sean           | Shared Services Manager  | Software Engineering |
+| Ruiz, Ricardo         | IT Manager - Support     | IT/IS                |
+| Saar-Beckles, Melinda | Software Developer I     | Software Engineering |
+| Smith, John           | Sales Manager            | Sales                |
+| Smith, Leigh Ann      | Administrative Assistant | Admin Offices        |
+| Tavares, Desiree      | Software Developer I     | Software Engineering |
+| True, Edward          | Software Engineer        | Software Engineering |
+| Wallace, Courtney  E  | Software Architect       | Software Engineering |
+| Williams, Jacquelyn   | Software Developer I     | Software Engineering |
++-------------------------------------------------------------------------+
+
+Positions in the Software Engineering department:
+
+SELECT DISTINCT positions."Position" AS "Positions" FROM employees 
+INNER JOIN positions ON employees."PositionID"=positions."PositionID" 
+INNER JOIN departments ON employees."DeptID"=departments."DeptID" 
+WHERE departments."Department"='Software Engineering';
+
++------------------------------+
+| Positions                    |
+|------------------------------|
+| CTO                          |
+| Director of Operations       |
+| Shared Services Manager      |
+| Software Architect           |
+| Software Developer I         |
+| Software Developer II        |
+| Software Engineer            |
+| Software Engineering Manager |
++------------------------------+
+
+Number of Managers:
+
+SELECT COUNT(*) AS "Number of Managers" FROM employees 
+INNER JOIN managers ON employees."EmployeeName"=managers."ManagerName";
+
++--------------------+
+| Number of Managers |
+|--------------------|
+| 5                  |
++--------------------+
+
+Management team:
+
+SELECT managers."ManagerName", positions."Position", employees."Salary" 
+FROM employees 
+INNER JOIN managers ON employees."EmployeeName"=managers."ManagerName" 
+INNER JOIN positions ON employees."PositionID"=positions."PositionID";
+
++----------------------------------------------------------+
+| ManagerName      | Position                | Salary      |
+|------------------+-------------------------+-------------|
+| King, Janet      | President & CEO         | $250,000.00 |
+| LeBlanc, Brandon | Shared Services Manager | $93,046.00  |
+| Miller, Brannon  | CTO                     | $83,667.00  |
+| Smith, John      | Sales Manager           | $72,992.00  |
+| Zamora, Jennifer | CIO                     | $220,450.00 |
++----------------------------------------------------------+

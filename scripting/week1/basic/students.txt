@@ -1,0 +1,10 @@
+Alice 16 1.7
+Jan 14 1.7
+Simon 15 2.0
+Dominic 13 1.2
+Monica 14 1.0
+Carl 13 2.5
+Felicitas 17 2.2
+Verena 10 1.8
+Bob - 1.1
+Martin 15 2.2
